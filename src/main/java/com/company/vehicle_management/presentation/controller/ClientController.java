@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ClientController {
 
-    private final ClientService service;
+    private ClientService service;
 
     @PostMapping
     public ResponseEntity<ClientResponseDto> criar(
