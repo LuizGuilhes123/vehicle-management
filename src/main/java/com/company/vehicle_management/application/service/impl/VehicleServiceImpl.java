@@ -1,6 +1,7 @@
 package com.company.vehicle_management.application.service.impl;
 
 
+import com.company.vehicle_management.application.service.VehicleService;
 import com.company.vehicle_management.domain.entity.VehicleEntity;
 import com.company.vehicle_management.domain.repository.ClientRepository;
 import com.company.vehicle_management.domain.repository.VehicleRepository;

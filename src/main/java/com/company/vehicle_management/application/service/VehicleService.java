@@ -1,4 +1,4 @@
-package com.company.vehicle_management.application.service.impl;
+package com.company.vehicle_management.application.service;
 
 
 
