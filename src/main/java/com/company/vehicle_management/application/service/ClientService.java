@@ -12,4 +12,10 @@ public interface ClientService {
     ClientResponseDto criar(ClientRequestDto request);
 
     List<ClientResponseDto> listarTodos();
+
+    ClientResponseDto buscarPorId(Long id);
+
+    ClientResponseDto atualizar(Long id, ClientRequestDto request);
+
+    void deletar(Long id);
 }

@@ -33,4 +33,32 @@ public class ClientServiceImpl implements ClientService {
                 .map(mapper::toResponse)
                 .toList();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ClientResponseDto buscarPorId(Long id) {
+        return repository.findById(id)
+                .map(mapper::toResponse)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+    }
+
+    @Override
+    public ClientResponseDto atualizar(Long id, ClientRequestDto request) {
+        var entity = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        entity.setName(request.name());
+        entity.setEmail(request.email());
+        entity.setDocument(request.document());
+
+        return mapper.toResponse(repository.save(entity));
+    }
+
+    @Override
+    public void deletar(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Cliente não encontrado");
+        }
+        repository.deleteById(id);
+    }
 }
