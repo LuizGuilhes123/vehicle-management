@@ -5,6 +5,7 @@ import com.company.vehicle_management.application.service.VehicleService;
 import com.company.vehicle_management.domain.entity.VehicleEntity;
 import com.company.vehicle_management.domain.repository.ClientRepository;
 import com.company.vehicle_management.domain.repository.VehicleRepository;
+import com.company.vehicle_management.exception.ResourceNotFoundException;
 import com.company.vehicle_management.infrastructure.mapper.VehicleMapper;
 import com.company.vehicle_management.presentation.dto.request.VehicleRequestDto;
 import com.company.vehicle_management.presentation.dto.response.VehicleResponseDto;
@@ -26,7 +27,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleResponseDto criar(VehicleRequestDto request) {
         var client = clientRepository.findById(request.clientId())
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         var entity = VehicleEntity.builder()
                 .brand(request.brand())
@@ -43,7 +44,7 @@ public class VehicleServiceImpl implements VehicleService {
     public VehicleResponseDto buscarPorId(Long id) {
         return vehicleRepository.findById(id)
                 .map(mapper::toResponse)
-                .orElseThrow(() -> new RuntimeException("Veículo não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Veículo não encontrado"));
     }
 
     @Override
@@ -58,10 +59,10 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public VehicleResponseDto atualizar(Long id, VehicleRequestDto request) {
         var entity = vehicleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Veículo não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Veículo não encontrado"));
 
         var client = clientRepository.findById(request.clientId())
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         entity.setBrand(request.brand());
         entity.setModel(request.model());
@@ -74,7 +75,7 @@ public class VehicleServiceImpl implements VehicleService {
     @Override
     public void deletar(Long id) {
         if (!vehicleRepository.existsById(id)) {
-            throw new RuntimeException("Veículo não encontrado");
+            throw new ResourceNotFoundException("Veículo não encontrado");
         }
         vehicleRepository.deleteById(id);
     }

@@ -1,8 +1,8 @@
 package com.company.vehicle_management.application.service.impl;
 
-
 import com.company.vehicle_management.application.service.ClientService;
 import com.company.vehicle_management.domain.repository.ClientRepository;
+import com.company.vehicle_management.exception.ResourceNotFoundException;
 import com.company.vehicle_management.infrastructure.mapper.ClientMapper;
 import com.company.vehicle_management.presentation.dto.request.ClientRequestDto;
 import com.company.vehicle_management.presentation.dto.response.ClientResponseDto;
@@ -27,6 +27,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ClientResponseDto> listarTodos() {
         return repository.findAll()
                 .stream()
@@ -39,13 +40,13 @@ public class ClientServiceImpl implements ClientService {
     public ClientResponseDto buscarPorId(Long id) {
         return repository.findById(id)
                 .map(mapper::toResponse)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
     }
 
     @Override
     public ClientResponseDto atualizar(Long id, ClientRequestDto request) {
         var entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         entity.setName(request.name());
         entity.setEmail(request.email());
@@ -57,8 +58,9 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public void deletar(Long id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException("Cliente não encontrado");
+            throw new ResourceNotFoundException("Cliente não encontrado");
         }
+
         repository.deleteById(id);
     }
 }
