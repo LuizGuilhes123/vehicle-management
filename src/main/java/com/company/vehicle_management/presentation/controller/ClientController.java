@@ -32,4 +32,23 @@ public class ClientController {
     public ResponseEntity<List<ClientResponseDto>> listarTodos() {
         return ResponseEntity.ok(service.listarTodos());
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientResponseDto> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.buscarPorId(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientResponseDto> atualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody ClientRequestDto request
+    ) {
+        return ResponseEntity.ok(service.atualizar(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        service.deletar(id);
+        return ResponseEntity.noContent().build();
+    }
 }
