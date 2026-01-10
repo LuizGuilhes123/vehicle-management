@@ -13,19 +13,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/veiculos")
+@RequestMapping("/vehicles")
 @RequiredArgsConstructor
 public class VehicleController {
 
     private final VehicleService service;
 
     @PostMapping
-    public ResponseEntity<VehicleResponseDto> criar(
-            @Valid @RequestBody VehicleRequestDto request
-    ) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(service.criar(request));
+    public ResponseEntity<VehicleResponseDto> criar(@RequestBody VehicleRequestDto request) {
+        var response = service.criar(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<VehicleResponseDto>> listar() {
+        return ResponseEntity.ok(service.listarTodos());
     }
 
     @GetMapping("/{id}")
@@ -33,15 +35,10 @@ public class VehicleController {
         return ResponseEntity.ok(service.buscarPorId(id));
     }
 
-    @GetMapping
-    public ResponseEntity<List<VehicleResponseDto>> listarTodos() {
-        return ResponseEntity.ok(service.listarTodos());
-    }
-
     @PutMapping("/{id}")
     public ResponseEntity<VehicleResponseDto> atualizar(
             @PathVariable Long id,
-            @Valid @RequestBody VehicleRequestDto request
+            @RequestBody VehicleRequestDto request
     ) {
         return ResponseEntity.ok(service.atualizar(id, request));
     }

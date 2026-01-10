@@ -13,23 +13,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/clientes")
+@RequestMapping("/clients")
 @RequiredArgsConstructor
 public class ClientController {
 
-    private ClientService service;
+    private final ClientService service;
 
     @PostMapping
-    public ResponseEntity<ClientResponseDto> criar(
-            @Valid @RequestBody ClientRequestDto request
-    ) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(service.criar(request));
+    public ResponseEntity<ClientResponseDto> criar(@RequestBody ClientRequestDto request) {
+        var response = service.criar(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
-    public ResponseEntity<List<ClientResponseDto>> listarTodos() {
+    public ResponseEntity<List<ClientResponseDto>> listar() {
         return ResponseEntity.ok(service.listarTodos());
     }
 
@@ -41,7 +38,7 @@ public class ClientController {
     @PutMapping("/{id}")
     public ResponseEntity<ClientResponseDto> atualizar(
             @PathVariable Long id,
-            @Valid @RequestBody ClientRequestDto request
+            @RequestBody ClientRequestDto request
     ) {
         return ResponseEntity.ok(service.atualizar(id, request));
     }
