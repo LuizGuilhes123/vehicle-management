@@ -3,6 +3,7 @@ package com.company.vehicle_management.domain.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 @Entity
 @Table(name = "clients")
 @Getter
