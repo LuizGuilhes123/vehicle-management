@@ -20,7 +20,7 @@ public class ClientController {
     private final ClientService service;
 
     @PostMapping
-    public ResponseEntity<ClientResponseDto> criar(@RequestBody ClientRequestDto request) {
+    public ResponseEntity<ClientResponseDto> criar(@Valid @RequestBody ClientRequestDto request) {
         var response = service.criar(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -36,9 +36,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientResponseDto> atualizar(
-            @PathVariable Long id,
-            @RequestBody ClientRequestDto request
+    public ResponseEntity<ClientResponseDto> atualizar(@Valid @PathVariable Long id, @RequestBody ClientRequestDto request
     ) {
         return ResponseEntity.ok(service.atualizar(id, request));
     }

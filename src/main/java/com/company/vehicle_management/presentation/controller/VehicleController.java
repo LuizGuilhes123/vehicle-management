@@ -20,7 +20,7 @@ public class VehicleController {
     private final VehicleService service;
 
     @PostMapping
-    public ResponseEntity<VehicleResponseDto> criar(@RequestBody VehicleRequestDto request) {
+    public ResponseEntity<VehicleResponseDto> criar(@Valid @RequestBody VehicleRequestDto request) {
         var response = service.criar(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -36,9 +36,7 @@ public class VehicleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VehicleResponseDto> atualizar(
-            @PathVariable Long id,
-            @RequestBody VehicleRequestDto request
+    public ResponseEntity<VehicleResponseDto> atualizar(@Valid @PathVariable Long id, @RequestBody VehicleRequestDto request
     ) {
         return ResponseEntity.ok(service.atualizar(id, request));
     }
